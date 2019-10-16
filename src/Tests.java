@@ -1,7 +1,7 @@
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-public class SortingTests {
+public class Tests {
     /* define constants */
     static long MAXVALUE = 2000000000;
     static long MINVALUE = 0;
