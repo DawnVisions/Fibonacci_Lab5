@@ -6,7 +6,9 @@ public class FibRecurDP {
     long[] fibResultsCache;
 
     public long fibonacci(long x) {
+        //Creates initial cache
         fibResultsCache = new long[(int) x+1];
+        //Fills cache with -1, represents that we have not yet calculated the fib number at this index
         for (int i = 0; i <= x; i++) {
             fibResultsCache[i] = -1;
         }
@@ -16,9 +18,11 @@ public class FibRecurDP {
     public long fibRecursiveWithCache(long x) {
         if (x <= 1)
             return x;
+        //If the fib number is already in cache, return the number from the cache
         else if (fibResultsCache[(int) x] != -1) {
             return fibResultsCache[(int) x];
         }
+        //If not in the cache, call x-1 and x-2 recursively and store in cache
         else {
             long result = fibRecursiveWithCache(x-1) + fibRecursiveWithCache(x-2);
             fibResultsCache[(int) x] = result;

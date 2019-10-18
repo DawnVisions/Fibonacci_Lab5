@@ -10,21 +10,26 @@ public class FibMatrix {
 
         //Take the matrix to the x+1 th power
         matrix = MatrixPower(matrix, (int) x+1);
-        printMatrix(matrix);
         //The number in the bottom right is the x-th fibonacci number
         return matrix[1][1];
     }
 
     static long[][] MatrixPower(long[][] matrix, int power)
     {
+        //If the power is 0, return the identity matrix, which is similar to multiplying an integer by 1, it does not change the matrix.
+        //Identity matrix:
+        // 1  0
+        // 0  1
         if (power == 0) {
             long[][] identity = {{1,0}, {0,1}};
             return identity;
         }
+        //Odd power - multiply matrix by next lowest even power
         else if (power%2 ==1)
         {
             return MatrixMultiplication(matrix, MatrixPower(matrix, power-1));
         }
+        //Even power - multiply the two matrices which are power/2
         else
         {
             long[][] result = MatrixPower(matrix, power/2);
@@ -49,6 +54,7 @@ public class FibMatrix {
         return result;
     }
 
+    //Print matrix method for testing and debugging
     static void printMatrix(long[][] matrix)
     {
         for(int i = 0; i<2; i++) {

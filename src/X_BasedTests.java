@@ -1,11 +1,11 @@
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-public class Tests {
+public class X_BasedTests {
 
+    private static final int MAXIMUM = 93;
     /* define constants */
-    static int numberOfTrials = 50;
-    private static final int MAXIBITSIZE = 30;
+    static int numberOfTrials = 1;
     static String ResultsFolderPath = "/home/elizabeth/IdeaProjects/Results/"; // pathname to results folder
     static FileWriter resultsFile;
     static PrintWriter resultsWriter;
@@ -14,13 +14,13 @@ public class Tests {
 
         //FibRecurDP method = new FibRecurDP();
         //boolean correct = method.checkSortCorrectness();
-        boolean correct = Verification.checkSortCorrectness(FibMatrix::fibonacci);
+        boolean correct = Verification.checkSortCorrectness(FibRecur::fibonacci);
         System.out.println("Verification Pass?: " + correct);
 
         // run the whole experiment at least twice, and expect to throw away the data from the earlier runs, before java has fully optimized
-        runFullExperiment("FibMatrix-Exp1-ThrowAway.txt");
-        runFullExperiment("FibMatrix-Exp2.txt");
-        runFullExperiment("FibMatrix-Exp3.txt");
+        runFullExperiment("FibLoop-XBasedExp1-ThrowAway.txt");
+        runFullExperiment("FibLoop-XBasedExp2.txt");
+        runFullExperiment("FibLoop-XBasedExp3.txt");
     }
 
     private static void runFullExperiment(String resultsFileName) {
@@ -36,27 +36,25 @@ public class Tests {
         ThreadCpuStopWatch BatchStopwatch = new ThreadCpuStopWatch(); // for timing an entire set of trials
         ThreadCpuStopWatch TrialStopwatch = new ThreadCpuStopWatch(); // for timing an individual trial
 
-        resultsWriter.println("#Bit size of x(n)  AverageTime"); // # marks a comment in gnuplot data
+        resultsWriter.println("#Fib number x  AverageTime"); // # marks a comment in gnuplot data
         resultsWriter.flush();
 
-        for (int inputSize = 1; inputSize <= MAXIBITSIZE; inputSize++) {
-            System.out.println("Running test for bit size " + inputSize + " ... ");
+        for (int i = 1; i<= MAXIMUM; i++) {
             System.out.print("    Running trial batch...");
             System.gc();
             long batchElapsedTime = 0;
             for (long trial = 0; trial < numberOfTrials; trial++) {
                 System.out.print("    Generating test data...");
-                long x = randomIntegerOfBitSize(inputSize);
                 System.gc();
-                System.out.println("...done.");
                 TrialStopwatch.start();
-                long result = FibMatrix.fibonacci(x);
+                long result = FibLoop.fibonacci(i);
                 batchElapsedTime = batchElapsedTime + TrialStopwatch.elapsedTime();
+                System.out.print(i + " fib number is " + result);
             }
             double averageTimePerTrialInBatch = (double) batchElapsedTime / (double) numberOfTrials; // calculate the average time per trial in this batch
 
             /* print data for this size of input */
-            resultsWriter.printf("%12d  %15.2f\n", inputSize, averageTimePerTrialInBatch);
+            resultsWriter.printf("%12d  %15.2f\n", i, averageTimePerTrialInBatch);
             resultsWriter.flush();
             System.out.println(" ....done.");
         }
